@@ -236,12 +236,10 @@ async def county(ctx, *arg):
     return
 
 
-@bot.command(help='Display the new cases since the last data')
+@bot.command(help='NYI :: Display the new cases since the last data')
 async def newcases(ctx):
 
     return
-
-
 
 
 @bot.command()
