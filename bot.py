@@ -236,12 +236,6 @@ async def county(ctx, *arg):
     return
 
 
-@bot.command(help='NYI :: Display the new cases since the last data')
-async def newcases(ctx):
-
-    return
-
-
 @bot.command()
 async def github(ctx):
     await ctx.send(GITHUB_URL)
