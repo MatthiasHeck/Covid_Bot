@@ -1,0 +1,1 @@
+{"OBJECTID": 1, "STATE": "CONNECTICUT", "ConfirmedCases": 2571, "Deaths": 36, "Recovered": null, "HospitalizedCases": 517, "Cases_age0_9": 27, "Cases_age10_19": 58, "Cases_age20_29": 320, "Cases_age30_39": 403, "Cases_age40_49": 427, "Cases_age50_59": 550, "Cases_age60_69": 406, "Cases_age70_79": 221, "Cases_age80_Older": 159, "DateLastUpdate": 1585540800000}
