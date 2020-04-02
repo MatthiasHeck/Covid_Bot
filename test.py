@@ -2,28 +2,47 @@ import requests
 import datetime
 import pytz
 
-ageURL = "https://maps.ct.gov/arcgis/rest/services/CT_DPH_COVID_19_PROD_Layers/FeatureServer/2/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&resultOffset=0&resultRecordCount=50"
-countyURL = "https://maps.ct.gov/arcgis/rest/services/CT_DPH_COVID_19_PROD_Layers/FeatureServer/1/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&resultOffset=0&resultRecordCount=2000"
-
-dataByCounty = {}
-
-r = requests.get(url=countyURL)
-rawdata = r.json()
-data = rawdata['features']
-
-for i in range(0, data.__len__()):
-    dataByCounty[data[i]['attributes']['COUNTY']] = data[i]['attributes']
+WORLD_DATA_URL = "https://covid19api.herokuapp.com/"
 
 
+worldData = {}
+worldRawData = ""
+worldDeathsData = {}
 
 
-dataByAge = {}
+class Location:
+    def __init__(self, confirmed, deaths, recovered):
 
-r = requests.get(url=ageURL)
-rawdata = r.json()
-data = rawdata['features'][0]['attributes']
+        self.confirmed = confirmed
+        self.deaths = deaths
+        self.recovered = recovered
 
-for d in data:
-    dataByAge[d] = data[d]
+
+# track last updated data and dont repopulate if the data is the same
+
+r = requests.get(url=WORLD_DATA_URL)
+worldRawData = r.json()
+
+
+for d in worldRawData['confirmed']['locations']:
+    loc = Location(d['latest'], 0, 'nan')
+    worldData[(d['country'], d['province'])] = loc
+
+for d in worldRawData['deaths']['locations']:
+    worldData[(d['country'], d['province'])].deaths = d['latest']
+
+for d in worldRawData['recovered']['locations']:
+    try:
+        worldData[(d['country'], d['province'])].recovered = d['latest']
+    except:
+        continue
+
+response = "```\n"
+response += "WORLDWIDE COVID-19 DATA_OLD:\n"
+response += "Confirmed: {:,}\n".format(worldRawData['confirmed']['latest'])
+response += "Deaths: {:,}\n".format(worldRawData['deaths']['latest'])
+response += "Recovered: {:,}\n".format(worldRawData['recovered']['latest'])
+response += "```"
+
 
 print('end')
